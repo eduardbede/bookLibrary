@@ -54,6 +54,7 @@ function addBooks(){
    finalUser.push(books);
    localStorage.setItem("userData", JSON.stringify(finalUser));
    document.querySelector('.totalPages').innerHTML = totalNumbers();
+   window.scrollTo(0, document.body.scrollHeight)
 }
 //functie ca sa afiseze ce este in localstorage cand se incarca pagina
 function onLoad(){
