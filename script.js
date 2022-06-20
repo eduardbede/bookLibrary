@@ -199,7 +199,7 @@ submitButton.addEventListener("click", ()=>{
    pages.value ='';
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
-   window.scrollTo(0, document.body.scrollHeight);
+   window.scrollTo(0, 1000);
 });
 
 window.scroll({
