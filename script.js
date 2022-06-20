@@ -15,6 +15,7 @@ let finalUser = JSON.parse(localStorage.getItem('userData'));
    if(finalUser === null){
       finalUser = [];
    }
+   
    //constructor pentru fiecare carte creata
 class Books{
    constructor(author, title, pages, id){
@@ -29,6 +30,7 @@ class Books{
 form.addEventListener('submit', (el)=>{
   el.preventDefault();
 });
+
 //cand apasam enter sa nu ia comanda
 form.onkeypress = function(e) {
    let key = e.charCode || e.keyCode || 0;     
@@ -36,6 +38,7 @@ form.onkeypress = function(e) {
      e.preventDefault();
    }
  }
+
 //functie pentru a afisa din input si a aduga cartile in array
 function addBooks(){
    const books = new Books(author.value, title.value, pages.value, uniqueID());
@@ -57,7 +60,9 @@ function addBooks(){
    document.querySelector(`[data-key='${books.id}']`).scrollIntoView({
       behavior: 'smooth'
     });
+    console.log(books.id)
 }
+
 //functie ca sa afiseze ce este in localstorage cand se incarca pagina
 function onLoad(){
    finalUser.forEach(el=>{
@@ -78,6 +83,7 @@ function onLoad(){
   document.querySelector(".totalBooks").innerHTML = finalUser.length;
    });
 }
+
 //functie de update dupa Edit
 function updateDisplay(){
    document.querySelectorAll('.gridDiv').forEach(el =>el.remove());
@@ -98,6 +104,7 @@ function updateDisplay(){
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
    });
 }
+
  //functie de stergere carte si da updateze localstorage
 function delBook(click){
 if(finalUser.findIndex(i => i.id == click) !== -1){
@@ -109,6 +116,7 @@ if(finalUser.findIndex(i => i.id == click) !== -1){
   document.querySelector('.totalPages').innerHTML = totalNumbers();
   document.querySelector(".totalBooks").innerHTML = finalUser.length;
 }
+
 //functie edit
 function editBook(click){
    if(finalUser.findIndex(i => i.id == click) !== -1){
@@ -128,8 +136,8 @@ function editBook(click){
    document.querySelector(".confirmButton").id = click;
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    window.scrollTo(0, 0);
-   
    }
+
 //functie pentru butonul edit final
 function finalEdit(click){
 if(finalUser.length === 0){
@@ -157,10 +165,12 @@ if(finalUser.length === 0){
             behavior: 'smooth'
           });
 }
+
 //functie pentru ID unic
 function uniqueID() {
    return Math.floor(Math.random() * Date.now())
 }
+
 //afiseaza ce este in localstorage cand se dschide pagina
 document.addEventListener("DOMContentLoaded", onLoad());
 
@@ -169,11 +179,6 @@ function totalNumbers(){
    let total = finalUser.map(el => el.pages)
    return total.reduce((a, b)=> parseFloat(a) + parseFloat(b), 0)
 }
-/* 
-document.getElementById("author").style.borderColor ="red"
-   document.getElementById("author").style.borderWidth = "3px"
- */
-
 
    //cand dam click pe input sa se modifice bordura
    document.querySelectorAll('input').forEach(e =>{
@@ -183,10 +188,6 @@ document.getElementById("author").style.borderColor ="red"
       })
    })
      
-
-
-
-
 //buton submit dupa ce am introdus datele
 submitButton.addEventListener("click", ()=>{
   if(author.value == "" || title.value == '' || pages.value == ''){
@@ -199,11 +200,9 @@ submitButton.addEventListener("click", ()=>{
     return
    }
    addBooks()
-   window.scrollTo(0, document.body.scrollHeight);
    author.value = '';
    title.value ='';
    pages.value ='';
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
-   
 });
