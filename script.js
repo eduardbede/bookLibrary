@@ -54,7 +54,9 @@ function addBooks(){
    finalUser.push(books);
    localStorage.setItem("userData", JSON.stringify(finalUser));
    document.querySelector('.totalPages').innerHTML = totalNumbers();
-   
+   document.querySelector(`[data-key='${books.id}']`).scrollIntoView({
+      behavior: 'smooth'
+    });
 }
 //functie ca sa afiseze ce este in localstorage cand se incarca pagina
 function onLoad(){
@@ -151,6 +153,9 @@ if(finalUser.length === 0){
          console.log(totalNumbers()) 
          document.querySelector('.totalPages').innerHTML = totalNumbers();
          document.querySelector(".totalBooks").innerHTML = finalUser.length;
+         document.querySelector(`[data-key='${click}']`).scrollIntoView({
+            behavior: 'smooth'
+          });
 }
 //functie pentru ID unic
 function uniqueID() {
@@ -194,16 +199,11 @@ submitButton.addEventListener("click", ()=>{
     return
    }
    addBooks()
+   window.scrollTo(0, document.body.scrollHeight);
    author.value = '';
    title.value ='';
    pages.value ='';
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
-   window.scrollTo(0, 1000);
+   
 });
-
-window.scroll({
-   top: 0, 
-   left: 0, 
-   behavior: 'smooth'
- });
