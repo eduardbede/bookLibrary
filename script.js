@@ -146,6 +146,11 @@ if(finalUser.findIndex(i => i.id == click) !== -1){
   document.querySelector('.totalPages').innerHTML = totalNumbers();
   document.querySelector(".totalBooks").innerHTML = finalUser.length;
   document.querySelector(".totalRead").innerHTML = totalRead()
+  document.querySelectorAll('input').forEach(e =>{
+   if(e.value == ""){
+      e.style.borderColor = "black";
+   }
+  })
 }
 
 //functie edit
