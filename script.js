@@ -7,31 +7,26 @@ const submitButton = document.getElementById('submitButton');
 const date = new Date();
 let year = date.getFullYear();
 const an = (document.getElementById("an").textContent = year + " @eduardbede ");
-
 // variabila de stocare
 let finalUser = JSON.parse(localStorage.getItem('userData'));
-
 //daca variabila de stocare nu e array
    if(finalUser === null){
       finalUser = [];
    }
-   
    //constructor pentru fiecare carte creata
 class Books{
    constructor(author, title, pages, id, read){
       this.author = author,
       this.title = title,
       this.pages = pages,
-      this.id = id
+      this.id = id;
       this.read = read;
    }
 }
-
 //sa nu isi dea refresh pagina cand dam submit la form
 form.addEventListener('submit', (el)=>{
   el.preventDefault();
 });
-
 //cand apasam enter sa nu ia comanda
 form.onkeypress = function(e) {
    let key = e.charCode || e.keyCode || 0;     
@@ -39,7 +34,6 @@ form.onkeypress = function(e) {
      e.preventDefault();
    }
  }
-
 //functie pentru a afisa din input si a aduga cartile in array
 function addBooks(){
    const books = new Books(author.value, title.value, pages.value, uniqueID(), toggleAddBook());
@@ -67,11 +61,8 @@ function addBooks(){
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalRead").innerHTML = totalRead();
    document.getElementById("toggleInputAdd").checked = false;
-   document.querySelector(`[data-key='${books.id}']`).scrollIntoView({
-      behavior: 'smooth'
-    });
+   
 }
-
 //functie ca sa afiseze ce este in localstorage cand se incarca pagina
 function onLoad(){
    finalUser.forEach(el=>{
@@ -93,24 +84,19 @@ function onLoad(){
                         <span class="labels" data-on="YES" data-off="NO"></span>
                         </label>
                      </div>`
-                 
-                  
-
   createDiv.appendChild(div).className ='gridDiv';
   document.querySelector('.totalPages').innerHTML = totalNumbers();
   document.querySelector(".totalBooks").innerHTML = finalUser.length;
   document.querySelector(".totalRead").innerHTML = totalRead()    
-
    });
 }
-
 //functie de update dupa Edit
 function updateDisplay(){
    document.querySelectorAll('.gridDiv').forEach(el =>el.remove());
    finalUser.forEach(el=>{
    let div = document.createElement('div');
    div.setAttribute('data-key', el.id);
-   div.innerHTML = ` <div class="editAndDel">
+   div.innerHTML = `<div class="editAndDel">
                            <button id=${el.id} class="delButton" onClick="delBook(this.id)" >
                            <i class="fa fa-remove" style="font-size:24px;color:red"></i></button>
                            <button id=${el.id} class="editButton" onClick="editBook(this.id)" >
@@ -131,15 +117,14 @@ function updateDisplay(){
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
    });
 }
-
  //functie de stergere carte si da updateze localstorage
 function delBook(click){
   if(confirm("Are you sure you want to delete this book?") == false){
    return
   }
-if(finalUser.findIndex(i => i.id == click) !== -1){
-   finalUser.splice(finalUser.findIndex(i => i.id == click), 1);
-   const item = document.querySelector(`[data-key='${click}']`)
+   if(finalUser.findIndex(i => i.id == click) !== -1){
+      finalUser.splice(finalUser.findIndex(i => i.id == click), 1);
+    const item = document.querySelector(`[data-key='${click}']`);
    item.remove();
 } 
   localStorage.setItem("userData", JSON.stringify(finalUser));
@@ -152,7 +137,6 @@ if(finalUser.findIndex(i => i.id == click) !== -1){
    }
   })
 }
-
 //functie edit
 function editBook(click){
    if(finalUser.findIndex(i => i.id == click) !== -1){
@@ -208,27 +192,21 @@ function finalEdit(click){
             behavior: 'smooth'
           });
 }
-
 //functie pentru ID unic
 function uniqueID() {
    return Math.floor(Math.random() * Date.now())
 }
-
 //afiseaza ce este in localstorage cand se dschide pagina
 document.addEventListener("DOMContentLoaded", onLoad());
-
 //functie care sa caluleze numarul total de pagini
 function totalNumbers(){
    let total = finalUser.map(el => el.pages)
    return total.reduce((a, b)=> parseFloat(a) + parseFloat(b), 0)
 }
-
 //functie pentru a arata cate carti ciite sunt
 function totalRead(){
   return finalUser.filter((el) => el.read === "checked").length
 }
-
-
    //cand dam click pe input sa se modifice bordura
    document.querySelectorAll('input').forEach(e =>{
       e.addEventListener("click", ()=>{
@@ -236,11 +214,7 @@ function totalRead(){
          e.style.borderWidth = "3px";
       });
    });
-     
-
-
    //functie toggle button care sa ne arate daca am citit cartea sau nu
-
    function toggleButton(click){
            if(finalUser[finalUser.findIndex(i => i.id == click)].read == "") {
             finalUser[finalUser.findIndex(i => i.id == click)].read = "checked";
@@ -262,8 +236,6 @@ function totalRead(){
         return ''
       }
    }
-   toggleAddBook()
-
 //buton submit dupa ce am introdus datele
 submitButton.addEventListener("click", ()=>{
   if(author.value == "" || title.value == '' || pages.value == ''){
@@ -281,4 +253,8 @@ submitButton.addEventListener("click", ()=>{
    pages.value ='';
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
+   document.querySelector(`[data-key='${finalUser[finalUser.length - 1].id}']`).scrollIntoView({
+      behavior: 'smooth'
+    });
+   
 });
