@@ -23,6 +23,7 @@ class Books{
       this.title = title,
       this.pages = pages,
       this.id = id
+      this.read ;
    }
 }
 
@@ -45,14 +46,21 @@ function addBooks(){
    let div = document.createElement('div');
    div.setAttribute('data-key', books.id);
    div.innerHTML = ` <div class="editAndDel">
-                        <button id=${books.id} class="delButton" onClick="delBook(this.id)" >
+                        <button id=${books.id} class="delButton" onClick="delBook(this.id)">
                         <i class="fa fa-remove" style="font-size:24px;color:red"></i></button>
                         <button id=${books.id} class="editButton" onClick="editBook(this.id)" >
                         <i class="fa fa-pencil" style="font-size:24px;color:blue"></i></button>
                      </div>
                      <p class="pDiv">Author: ${books.author}</p>
                      <p class="pDiv">Title: ${books.title}</p>
-                     <p class="pDiv">Pages: ${books.pages}</p>`
+                     <p class="pDiv">Pages: ${books.pages}</p>
+                     <div class= "toggleDiv">
+                     <p class ="pDiv">Readed?</p>
+                        <label class="toggle">
+                        <input id=${books.id} type="checkbox" onClick="toggleButton(this.id)" class="inputToggle" ${books.read}>
+                           <span class="labels" data-on="ON" data-off="OFF"></span>
+                        </label>
+                     </div>`
    createDiv.appendChild(div).className ='gridDiv';
    finalUser.push(books);
    localStorage.setItem("userData", JSON.stringify(finalUser));
@@ -60,7 +68,6 @@ function addBooks(){
    document.querySelector(`[data-key='${books.id}']`).scrollIntoView({
       behavior: 'smooth'
     });
-    console.log(books.id)
 }
 
 //functie ca sa afiseze ce este in localstorage cand se incarca pagina
@@ -77,10 +84,21 @@ function onLoad(){
                      <p class="pDiv">Author: ${el.author}</p>
                      <p class="pDiv">Title: ${el.title}</p>
                      <p class="pDiv">Pages: ${el.pages}</p>
-                     `
+                     <div class= "toggleDiv" >
+                        <p class ="pDiv">Readed?</p>
+                        <label class="toggle" >
+                        <input id=${el.id} type="checkbox" onClick="toggleButton(this.id)" class="inputToggle" ${el.read}>
+                        <span class="labels" data-on="YES" data-off="NO"></span>
+                        </label>
+                     </div>`
+                 
+                  
+
   createDiv.appendChild(div).className ='gridDiv';
   document.querySelector('.totalPages').innerHTML = totalNumbers();
   document.querySelector(".totalBooks").innerHTML = finalUser.length;
+  document.querySelector(".totalRead").innerHTML = totalRead()    
+
    });
 }
 
@@ -98,7 +116,15 @@ function updateDisplay(){
                      </div>
                      <p class="pDiv">Author: ${el.author}</p>
                      <p class="pDiv">Title: ${el.title}</p>
-                     <p class="pDiv">Pages: ${el.pages}</p>`
+                     <p class="pDiv">Pages: ${el.pages}</p>
+                     <div class="toggleDiv">
+                     <p class ="pDiv">Readed?</p>
+                        <label class="toggle">
+                           <input id=${el.id} type="checkbox" onClick="toggleButton(this.id)" class="inputToggle" ${el.read}>
+                           <span class="labels" data-on="ON" data-off="OFF"></span>
+                        </label>
+                     </div>`
+                     console.log(el.read)
    createDiv.appendChild(div).className ='gridDiv';
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
@@ -136,7 +162,12 @@ function editBook(click){
    document.querySelector(".confirmButton").id = click;
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    window.scrollTo(0, 0);
-   }
+
+   
+}
+
+
+
 
 //functie pentru butonul edit final
 function finalEdit(click){
@@ -180,6 +211,11 @@ function totalNumbers(){
    return total.reduce((a, b)=> parseFloat(a) + parseFloat(b), 0)
 }
 
+function totalRead(){
+  return finalUser.filter((obj) => obj.read === "checked").length
+}
+
+
    //cand dam click pe input sa se modifice bordura
    document.querySelectorAll('input').forEach(e =>{
       e.addEventListener("click", ()=>{
@@ -188,8 +224,32 @@ function totalNumbers(){
       })
    })
      
+
+
+   //functie toggle button care sa ne arate daca am citit cartea sau nu
+   function toggleButton(click){
+         const toggleInputs = document.querySelectorAll(".inputToggle");
+         toggleInputs.forEach((el)=>{
+            el.addEventListener("change", (evt)=>{
+             if(evt.target.checked === true){
+               finalUser[finalUser.findIndex(i => i.id == click)].read = "checked";
+               localStorage.setItem("userData", JSON.stringify(finalUser));
+               document.querySelector(".totalRead").innerHTML = totalRead();
+             } else {
+               finalUser[finalUser.findIndex(i => i.id == click)].read = "";
+               localStorage.setItem("userData", JSON.stringify(finalUser));
+               document.querySelector(".totalRead").innerHTML = totalRead();
+             }
+            });
+         });
+      }
+   
+   
+
+
 //buton submit dupa ce am introdus datele
 submitButton.addEventListener("click", ()=>{
+   console.log(totalRead())
   if(author.value == "" || title.value == '' || pages.value == ''){
      document.querySelectorAll('input').forEach(e =>{
       if(e.value == ""){
@@ -205,4 +265,5 @@ submitButton.addEventListener("click", ()=>{
    pages.value ='';
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
+   
 });
