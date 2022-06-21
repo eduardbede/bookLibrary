@@ -18,12 +18,12 @@ let finalUser = JSON.parse(localStorage.getItem('userData'));
    
    //constructor pentru fiecare carte creata
 class Books{
-   constructor(author, title, pages, id){
+   constructor(author, title, pages, id, read){
       this.author = author,
       this.title = title,
       this.pages = pages,
       this.id = id
-      this.read ;
+      this.read = read;
    }
 }
 
@@ -42,7 +42,7 @@ form.onkeypress = function(e) {
 
 //functie pentru a afisa din input si a aduga cartile in array
 function addBooks(){
-   const books = new Books(author.value, title.value, pages.value, uniqueID());
+   const books = new Books(author.value, title.value, pages.value, uniqueID(), toggleAddBook());
    let div = document.createElement('div');
    div.setAttribute('data-key', books.id);
    div.innerHTML = ` <div class="editAndDel">
@@ -58,13 +58,15 @@ function addBooks(){
                      <p class ="pDiv">Readed?</p>
                         <label class="toggle">
                         <input id=${books.id} type="checkbox" onClick="toggleButton(this.id)" class="inputToggle" ${books.read}>
-                           <span class="labels" data-on="ON" data-off="OFF"></span>
+                           <span class="labels" data-on="YES" data-off="NO"></span>
                         </label>
                      </div>`
    createDiv.appendChild(div).className ='gridDiv';
    finalUser.push(books);
    localStorage.setItem("userData", JSON.stringify(finalUser));
    document.querySelector('.totalPages').innerHTML = totalNumbers();
+   document.querySelector(".totalRead").innerHTML = totalRead();
+   document.getElementById("toggleInputAdd").checked = false;
    document.querySelector(`[data-key='${books.id}']`).scrollIntoView({
       behavior: 'smooth'
     });
@@ -121,10 +123,9 @@ function updateDisplay(){
                      <p class ="pDiv">Readed?</p>
                         <label class="toggle">
                            <input id=${el.id} type="checkbox" onClick="toggleButton(this.id)" class="inputToggle" ${el.read}>
-                           <span class="labels" data-on="ON" data-off="OFF"></span>
+                           <span class="labels" data-on="YES" data-off="NO"></span>
                         </label>
                      </div>`
-                     console.log(el.read)
    createDiv.appendChild(div).className ='gridDiv';
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
@@ -141,6 +142,7 @@ if(finalUser.findIndex(i => i.id == click) !== -1){
   localStorage.setItem("userData", JSON.stringify(finalUser));
   document.querySelector('.totalPages').innerHTML = totalNumbers();
   document.querySelector(".totalBooks").innerHTML = finalUser.length;
+  document.querySelector(".totalRead").innerHTML = totalRead()
 }
 
 //functie edit
@@ -162,16 +164,19 @@ function editBook(click){
    document.querySelector(".confirmButton").id = click;
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    window.scrollTo(0, 0);
-
-   
 }
-
-
-
-
 //functie pentru butonul edit final
 function finalEdit(click){
-if(finalUser.length === 0){
+   if(author.value == "" || title.value == '' || pages.value == ''){
+      document.querySelectorAll('input').forEach(e =>{
+       if(e.value == ""){
+          e.style.borderColor = "red";
+          e.style.borderWidth = "3px";
+       }
+      })
+     return
+    }
+   if(finalUser.length === 0){
           document.querySelector(".confirmButton").remove();
           submitButton.style.display = "inline-block"
           author.value ='';
@@ -189,7 +194,6 @@ if(finalUser.length === 0){
           title.value ='';
           pages.value ='';
           updateDisplay();
-         console.log(totalNumbers()) 
          document.querySelector('.totalPages').innerHTML = totalNumbers();
          document.querySelector(".totalBooks").innerHTML = finalUser.length;
          document.querySelector(`[data-key='${click}']`).scrollIntoView({
@@ -211,8 +215,9 @@ function totalNumbers(){
    return total.reduce((a, b)=> parseFloat(a) + parseFloat(b), 0)
 }
 
+//functie pentru a arata cate carti ciite sunt
 function totalRead(){
-  return finalUser.filter((obj) => obj.read === "checked").length
+  return finalUser.filter((el) => el.read === "checked").length
 }
 
 
@@ -220,36 +225,39 @@ function totalRead(){
    document.querySelectorAll('input').forEach(e =>{
       e.addEventListener("click", ()=>{
          e.style.borderColor = "black";
-         e.style.borderWidth = "1px";
-      })
-   })
+         e.style.borderWidth = "3px";
+      });
+   });
      
 
 
    //functie toggle button care sa ne arate daca am citit cartea sau nu
-   function toggleButton(click){
-         const toggleInputs = document.querySelectorAll(".inputToggle");
-         toggleInputs.forEach((el)=>{
-            el.addEventListener("change", (evt)=>{
-             if(evt.target.checked === true){
-               finalUser[finalUser.findIndex(i => i.id == click)].read = "checked";
-               localStorage.setItem("userData", JSON.stringify(finalUser));
-               document.querySelector(".totalRead").innerHTML = totalRead();
-             } else {
-               finalUser[finalUser.findIndex(i => i.id == click)].read = "";
-               localStorage.setItem("userData", JSON.stringify(finalUser));
-               document.querySelector(".totalRead").innerHTML = totalRead();
-             }
-            });
-         });
-      }
-   
-   
 
+   function toggleButton(click){
+           if(finalUser[finalUser.findIndex(i => i.id == click)].read == "") {
+            finalUser[finalUser.findIndex(i => i.id == click)].read = "checked";
+            localStorage.setItem("userData", JSON.stringify(finalUser));
+            document.querySelector(".totalRead").innerHTML = totalRead();
+         }  
+            else if(finalUser[finalUser.findIndex(i => i.id == click)].read == "checked"){
+               finalUser[finalUser.findIndex(i => i.id == click)].read = "";
+                localStorage.setItem("userData", JSON.stringify(finalUser));
+                document.querySelector(".totalRead").innerHTML = totalRead();
+            }
+      }
+   //functie read book cand dam add
+   function toggleAddBook(){
+      const toggle = document.getElementById("toggleInputAdd");
+      if(toggle.checked === true){
+         return "checked" 
+      } else {
+        return ''
+      }
+   }
+   toggleAddBook()
 
 //buton submit dupa ce am introdus datele
 submitButton.addEventListener("click", ()=>{
-   console.log(totalRead())
   if(author.value == "" || title.value == '' || pages.value == ''){
      document.querySelectorAll('input').forEach(e =>{
       if(e.value == ""){
@@ -265,5 +273,4 @@ submitButton.addEventListener("click", ()=>{
    pages.value ='';
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
-   
 });
