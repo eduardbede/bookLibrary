@@ -55,7 +55,7 @@ function addBooks(){
                      <p class="pDiv">Title: ${books.title}</p>
                      <p class="pDiv">Pages: ${books.pages}</p>
                      <div class= "toggleDiv">
-                     <p class ="pDiv">Readed?</p>
+                     <p class ="pDiv">Read?</p>
                         <label class="toggle">
                         <input id=${books.id} type="checkbox" onClick="toggleButton(this.id)" class="inputToggle" ${books.read}>
                            <span class="labels" data-on="YES" data-off="NO"></span>
@@ -87,7 +87,7 @@ function onLoad(){
                      <p class="pDiv">Title: ${el.title}</p>
                      <p class="pDiv">Pages: ${el.pages}</p>
                      <div class= "toggleDiv" >
-                        <p class ="pDiv">Readed?</p>
+                        <p class ="pDiv">Read?</p>
                         <label class="toggle" >
                         <input id=${el.id} type="checkbox" onClick="toggleButton(this.id)" class="inputToggle" ${el.read}>
                         <span class="labels" data-on="YES" data-off="NO"></span>
@@ -120,7 +120,7 @@ function updateDisplay(){
                      <p class="pDiv">Title: ${el.title}</p>
                      <p class="pDiv">Pages: ${el.pages}</p>
                      <div class="toggleDiv">
-                     <p class ="pDiv">Readed?</p>
+                     <p class ="pDiv">Read?</p>
                         <label class="toggle">
                            <input id=${el.id} type="checkbox" onClick="toggleButton(this.id)" class="inputToggle" ${el.read}>
                            <span class="labels" data-on="YES" data-off="NO"></span>
