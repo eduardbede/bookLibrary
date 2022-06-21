@@ -130,12 +130,23 @@ function delBook(click){
   localStorage.setItem("userData", JSON.stringify(finalUser));
   document.querySelector('.totalPages').innerHTML = totalNumbers();
   document.querySelector(".totalBooks").innerHTML = finalUser.length;
-  document.querySelector(".totalRead").innerHTML = totalRead()
+  document.querySelector(".totalRead").innerHTML = totalRead();
   document.querySelectorAll('input').forEach(e =>{
    if(e.value == ""){
       e.style.borderColor = "black";
    }
-  })
+         author.value ='';
+         title.value ='';
+         pages.value ='';
+         if(finalUser.length === 0){
+            document.querySelector(".confirmButton").remove();
+            submitButton.style.display = "inline-block"
+            author.value ='';
+            title.value ='';
+            pages.value ='';
+            return;
+  }
+  });
 }
 //functie edit
 function editBook(click){
@@ -236,6 +247,15 @@ function totalRead(){
         return ''
       }
    }
+
+
+   function scrollToLast(){
+     return document.querySelector(`[data-key='${finalUser[finalUser.length - 1].id}']`).scrollIntoView({
+         behavior: 'smooth'
+       });
+   }
+
+
 //buton submit dupa ce am introdus datele
 submitButton.addEventListener("click", ()=>{
   if(author.value == "" || title.value == '' || pages.value == ''){
@@ -253,8 +273,6 @@ submitButton.addEventListener("click", ()=>{
    pages.value ='';
    document.querySelector('.totalPages').innerHTML = totalNumbers();
    document.querySelector(".totalBooks").innerHTML = finalUser.length;
-   document.querySelector(`[data-key='${finalUser[finalUser.length - 1].id}']`).scrollIntoView({
-      behavior: 'smooth'
-    });
+   setTimeout(scrollToLast, 100)
    
 });
