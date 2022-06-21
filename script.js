@@ -134,6 +134,9 @@ function updateDisplay(){
 
  //functie de stergere carte si da updateze localstorage
 function delBook(click){
+  if(confirm("Are you sure you want to delete this book?") == false){
+   return
+  }
 if(finalUser.findIndex(i => i.id == click) !== -1){
    finalUser.splice(finalUser.findIndex(i => i.id == click), 1);
    const item = document.querySelector(`[data-key='${click}']`)
