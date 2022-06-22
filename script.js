@@ -138,14 +138,13 @@ function delBook(click){
          author.value ='';
          title.value ='';
          pages.value ='';
-         if(finalUser.length === 0){
-            document.querySelector(".confirmButton").remove();
-            submitButton.style.display = "inline-block"
-            author.value ='';
-            title.value ='';
-            pages.value ='';
-            return;
-  }
+         document.querySelector(".confirmButton").remove();
+         submitButton.style.display = "inline-block"
+         author.value ='';
+         title.value ='';
+         pages.value ='';
+            
+  
   });
 }
 //functie edit
