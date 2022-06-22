@@ -199,10 +199,18 @@ function finalEdit(click){
           updateDisplay();
          document.querySelector('.totalPages').innerHTML = totalNumbers();
          document.querySelector(".totalBooks").innerHTML = finalUser.length;
-         document.querySelector(`[data-key='${click}']`).scrollIntoView({
-            behavior: 'smooth'
-          });
+         
+         function scrollAfterEdit(){
+            return document.querySelector(`[data-key='${click}']`).scrollIntoView({
+                behavior: 'smooth'
+              });
+          }
+         setTimeout(scrollAfterEdit, 100)
 }
+
+
+
+
 //functie pentru ID unic
 function uniqueID() {
    return Math.floor(Math.random() * Date.now())
