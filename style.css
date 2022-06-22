@@ -37,7 +37,7 @@ header{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 10px;
+    gap: 5px;
     margin: 1vh 1vh 0vh 1vh;
     font-family: 'Roboto', sans-serif;
     font-size: large;
@@ -53,7 +53,7 @@ input{
 #main{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 250px));
-    grid-auto-rows: 45vh;
+    grid-auto-rows: 24em;
     justify-content: center;
     gap: 10em;
     overflow: auto;
@@ -186,6 +186,7 @@ footer {
     }
     #main{
         padding: 0px 5px 0px 5px;
+       
         
     }
     footer{
@@ -205,10 +206,10 @@ footer {
 
 
 @media only screen and (max-height: 575.98px) and (orientation: landscape) {
-    .inputClass{
-            height: 6vh;
+      .inputClass{
+           height: 2em;
         }
-           #main{
+        #main{
             grid-auto-rows: auto;
            }
         
